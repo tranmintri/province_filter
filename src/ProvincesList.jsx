@@ -39,17 +39,9 @@ const selectHoverStyle = {
 };
 
 const inputStyle = {
-    width: 220,
-    maxWidth: '100%',
-    display: 'block',
-    margin: '0 auto 20px auto',
-    padding: "12px 40px 12px 16px",
-    borderRadius: 12,
-    border: "1.5px solid #fda085",
-    fontSize: 16,
+    ...selectBaseStyle,
+    color: '#f76b1c', // màu chữ cam cho input
     background: '#fff url("data:image/svg+xml,%3Csvg width=\'16\' height=\'16\' fill=\'none\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Ccircle cx=\'7\' cy=\'7\' r=\'6\' stroke=\'%23fda085\' stroke-width=\'2\'/%3E%3Cpath d=\'M15 15l-3.5-3.5\' stroke=\'%23fda085\' stroke-width=\'2\' stroke-linecap=\'round\'/%3E%3C/svg%3E") no-repeat right 12px center',
-    outline: 'none',
-    color: '#f76b1c',
 };
 
 const listStyle = {
@@ -158,6 +150,16 @@ const getResponsiveTitleFontSize = () => (window.innerWidth <= 600 ? 20 : 28);
 const getResponsiveModalTitleFontSize = () => (window.innerWidth <= 600 ? 17 : 22);
 
 const getResponsiveCardStyle = () => {
+    if (window.innerWidth <= 400) {
+        return {
+            ...cardStyle,
+            maxWidth: '100vw',
+            width: '100vw',
+            padding: 6,
+            borderRadius: 10,
+            fontSize: getResponsiveFontSize(),
+        };
+    }
     if (window.innerWidth <= 600) {
         return {
             ...cardStyle,
@@ -185,10 +187,17 @@ const getResponsiveModalStyle = () => {
 };
 
 const getResponsiveInputStyle = () => {
-    if (window.innerWidth <= 600) {
-        return { ...inputStyle, width: '100%', minWidth: 0, fontSize: getResponsiveFontSize(), padding: '10px 36px 10px 12px' };
-    }
-    return { ...inputStyle, fontSize: getResponsiveFontSize() };
+    const base = getResponsiveSelectStyle();
+    return {
+        ...base,
+        color: '#f76b1c',
+        background: '#fff url("data:image/svg+xml,%3Csvg width=\'16\' height=\'16\' fill=\'none\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Ccircle cx=\'7\' cy=\'7\' r=\'6\' stroke=\'%23fda085\' stroke-width=\'2\'/%3E%3Cpath d=\'M15 15l-3.5-3.5\' stroke=\'%23fda085\' stroke-width=\'2\' stroke-linecap=\'round\'/%3E%3C/svg%3E") no-repeat right 12px center',
+        border: "1.5px solid #fda085",
+        borderRadius: 12,
+        outline: 'none',
+        padding: "12px 40px 12px 16px",
+        boxSizing: 'border-box',
+    };
 };
 
 const getResponsiveSelectStyle = () => {
@@ -338,36 +347,33 @@ const ProvincesList = () => {
                             isClearable
                         />
                     </div>
-                    {selectedProvince && (
-                        <>
-                            <div style={{ position: 'relative' }}>
-                                <input
-                                    type="text"
-                                    placeholder="🔍 Tìm kiếm xã/phường..."
-                                    value={search}
-                                    onChange={(e) => setSearch(e.target.value)}
-                                    style={getResponsiveInputStyle()}
-                                />
-                            </div>
-                            <ul style={getResponsiveListStyle()}>
-                                {filteredWards.length === 0 ? (
-                                    <li style={{ color: '#aaa', textAlign: 'center', padding: 16, fontSize: getResponsiveFontSize() }}>Không có xã/phường phù hợp.</li>
-                                ) : (
-                                    filteredWards.map((ward, idx) => (
-                                        <li
-                                            key={ward.ward_code + '-' + idx}
-                                            style={hoverIdx === idx ? { ...wardItemStyle, ...wardItemHover, fontSize: getResponsiveFontSize() } : { ...wardItemStyle, fontSize: getResponsiveFontSize() }}
-                                            onMouseEnter={() => setHoverIdx(idx)}
-                                            onMouseLeave={() => setHoverIdx(-1)}
-                                            onClick={() => setModalWard(ward)}
-                                        >
-                                            <span role="img" aria-label="pin">📍</span> {ward.ward_name} <span style={{ color: '#888', fontWeight: 400 }}>(Mã: {ward.ward_code})</span>
-                                        </li>
-                                    ))
-                                )}
-                            </ul>
-                        </>
-                    )}
+                    {/* Thay thế đoạn input tìm kiếm */}
+                    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%' }}>
+                        <input
+                            type="text"
+                            placeholder="🔍 Tìm kiếm xã/phường..."
+                            value={search}
+                            onChange={(e) => setSearch(e.target.value)}
+                            style={getResponsiveInputStyle()}
+                        />
+                    </div>
+                    <ul style={getResponsiveListStyle()}>
+                        {filteredWards.length === 0 ? (
+                            <li style={{ color: '#aaa', textAlign: 'center', padding: 16, fontSize: getResponsiveFontSize() }}>Không có xã/phường phù hợp.</li>
+                        ) : (
+                            filteredWards.map((ward, idx) => (
+                                <li
+                                    key={ward.ward_code + '-' + idx}
+                                    style={hoverIdx === idx ? { ...wardItemStyle, ...wardItemHover, fontSize: getResponsiveFontSize() } : { ...wardItemStyle, fontSize: getResponsiveFontSize() }}
+                                    onMouseEnter={() => setHoverIdx(idx)}
+                                    onMouseLeave={() => setHoverIdx(-1)}
+                                    onClick={() => setModalWard(ward)}
+                                >
+                                    <span role="img" aria-label="pin">📍</span> {ward.ward_name} <span style={{ color: '#888', fontWeight: 400 }}>(Mã: {ward.ward_code})</span>
+                                </li>
+                            ))
+                        )}
+                    </ul>
                 </>
             )}
             {modalWard && (

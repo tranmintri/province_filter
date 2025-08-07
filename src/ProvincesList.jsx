@@ -39,7 +39,7 @@ const selectHoverStyle = {
 };
 
 const inputStyle = {
-    width: 320,
+    width: 220,
     maxWidth: '100%',
     display: 'block',
     margin: '0 auto 20px auto',

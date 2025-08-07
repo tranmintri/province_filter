@@ -375,7 +375,7 @@ const ProvincesList = () => {
                     <div style={getResponsiveModalStyle()} onClick={e => e.stopPropagation()}>
                         <button style={closeBtnStyle} onClick={() => setModalWard(null)} title="Đóng">×</button>
                         <h3 style={getResponsiveModalTitleStyle()}>Thông tin xã/phường</h3>
-                        <ul style={{ padding: 0, margin: 0, listStyle: 'none', fontSize: getResponsiveFontSize() }}>
+                        <ul style={{ padding: 0, margin: 0, listStyle: 'none', fontSize: getResponsiveFontSize(), maxHeight: 320, overflowY: 'auto' }}>
                             <li style={listItemStyle}><span style={labelStyle}>Tên xã/phường:</span> <span style={valueStyle}>{modalWard.ward_name}</span></li>
                             <li style={listItemStyle}><span style={labelStyle}>Mã xã/phường:</span> <span style={valueStyle}>{modalWard.ward_code}</span></li>
                             <li style={listItemStyle}><span style={labelStyle}>Tỉnh/Thành phố:</span> <span style={valueStyle}>{modalWard.province_name}</span></li>
